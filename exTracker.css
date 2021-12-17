@@ -1,0 +1,50 @@
+body {
+    text-align: center;
+    font-size: 2em;
+}
+
+h1  {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+form   {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#horizontal {
+    display: flex;
+    padding-bottom: 2%;
+}
+
+#dateContainer {
+    display: flex;
+    align-items: center;
+}
+
+#amountContainer {
+    display: flex;
+    align-items: center;
+}
+
+
+input {
+    margin: 0 3%;
+    font-size: 1em;
+}
+
+
+input[name='expense'] {
+    width: 80%;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+input[name="amount"] {
+    width: 70%;
+}
+
+

@@ -1,11 +1,11 @@
 body {
     text-align: center;
-    font-size: 2em;
+    font-size: 1.9em;
 }
 
 h1  {
     font-size: 3em;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 form   {
@@ -15,21 +15,15 @@ form   {
     flex-direction: column;
 }
 
-#horizontal {
-    display: flex;
-    padding-bottom: 2%;
+table {
+    margin: 20px auto 0px;
+    border: 1px solid black;
+    width: 80%;
 }
 
-#dateContainer {
-    display: flex;
-    align-items: center;
+th {
+    border: 1px solid black;
 }
-
-#amountContainer {
-    display: flex;
-    align-items: center;
-}
-
 
 input {
     margin: 0 3%;
@@ -44,7 +38,46 @@ input[name='expense'] {
 }
 
 input[name="amount"] {
-    width: 70%;
+    width: 40%;
+}
+
+#horizontal {
+    display: flex;
+    padding-bottom: 2%;
+    justify-content: right;
+}
+
+#dateContainer {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#amountContainer {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#itemSpan {
+    width: 40%;
+}
+
+#dateSpan {
+    width: 15%;
+}
+
+#categorySpan {
+    width: 30%;
+}
+
+#addButton {
+    margin: 10px;
+    padding: 10px;
+    width: 100px;
+    font-size: 0.7em;
 }
 
 

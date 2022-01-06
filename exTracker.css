@@ -41,6 +41,18 @@ input[name="amount"] {
     width: 40%;
 }
 
+ td > span {
+    margin: 0 10px;
+}
+
+.categoryTd {
+    display: flex;
+    justify-content:space-between;
+}
+
+
+
+
 #horizontal {
     display: flex;
     padding-bottom: 2%;

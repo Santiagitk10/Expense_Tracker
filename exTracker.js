@@ -9,21 +9,67 @@ addButton.addEventListener('click',addItemToTable,false);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function addItemToTable(e){
     e.preventDefault();
-    console.log('here');
-    const newTr = document.createElement('tr');
-    for(let i = 0;i<4;i++){
-        let newTd = document.createElement('td');
-        newTr.appendChild(newTd);
+
+    if (dateInput.value != '' && amountInput.value != '' && itemInput.value != '' ) {
+        const newTr = document.createElement('tr');
+        for(let i = 0;i<4;i++){
+            let newTd = document.createElement('td');
+            newTr.appendChild(newTd);
+        }
+
+        newTr.lastChild.setAttribute('class', 'categoryTd');
+        
+        newTr.firstChild.appendChild(document.createTextNode(dateInput.value));
+        newTr.firstChild.nextSibling.appendChild(document.createTextNode(amountInput.value));
+        newTr.lastChild.previousSibling.appendChild(document.createTextNode(itemInput.value));
+        let newText = document.createTextNode('No Category');
+
+        let trashSpan = document.createElement('span');
+        let trashIcon = document.createElement('i');
+        trashIcon.setAttribute('class', 'fas fa-trash-alt');
+        trashSpan.appendChild(trashIcon);
+
+        let pencilSpan = document.createElement('span');
+        let pencilIcon = document.createElement('i');
+        pencilIcon.setAttribute('class', 'fas fa-pencil-alt');
+        pencilSpan.appendChild(pencilIcon);
+
+        let tagSpan = document.createElement('span');
+        let tagIcon = document.createElement('i');
+        tagIcon.setAttribute('class', 'fas fa-tag');
+        tagSpan.appendChild(tagIcon);
+
+        newTr.lastChild.appendChild(newText);
+        newTr.lastChild.appendChild(tagSpan);
+        newTr.lastChild.appendChild(pencilSpan);
+        newTr.lastChild.appendChild(trashSpan);
+
+        tableBody.appendChild(newTr);
+
+        dateInput.value = '';
+        amountInput.value = '';
+        itemInput.value = '';
+
+    } else {
+        alert('All fields must be populated');
     }
     
-    newTr.firstChild.appendChild(document.createTextNode(dateInput.textContent));
-    newTr.firstChild.nextSibling.appendChild(amountInput.textContent);
-    newTr.lastChild.previousSibling.appendChild(itemInput.textContent);
-    let newText = document.createTextNode('No Category');
-    newTr.lastChild.appendChild(newText);
-
-    tableBody.appendChild(newTr);
 
 }

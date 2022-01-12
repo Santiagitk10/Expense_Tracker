@@ -41,13 +41,33 @@ input[name="amount"] {
     width: 40%;
 }
 
- td > span {
-    margin: 0 10px;
+
+ td > span > span{
+   margin-left: 30px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px;
+    width: 125px;
+    font-size: 0.7em;
 }
 
 .categoryTd {
     display: flex;
-    justify-content:space-between;
+    justify-content:center;
+}
+
+.spanWrapper {
+    width: 180px;
+}
+
+.hiddenOption {
+    display: none;
+}
+
+.shownOption {
+    display: inline;
 }
 
 
@@ -85,11 +105,7 @@ input[name="amount"] {
     width: 30%;
 }
 
-#addButton {
-    margin: 10px;
-    padding: 10px;
-    width: 100px;
-    font-size: 0.7em;
-}
+
+
 
 

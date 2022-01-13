@@ -9,6 +9,7 @@ const editIcons = document.getElementsByClassName('fas fa-pencil-alt');
 const tagIcons = document.getElementsByClassName('fas fa-tag');
 const form = document.getElementById('form');
 let editTarget;
+let categories = ['Comida', 'Transporte'];
 
 
 
@@ -16,6 +17,21 @@ let editTarget;
 addButton.addEventListener('click', addItemToTable,false);
 tableBody.addEventListener('mouseover', showOptions,false);
 tableBody.addEventListener('mouseout', hideOptions,false)
+manCatBtn.addEventListener('click', function(){
+    let msg = '<div class="header"><a id="close" href="#">close X</a></div>';
+    msg += '<button id="CategoryCreation">Create Category</button><button id="CategoryDisplay">Show Categories</button>';
+    let note = document.createElement('div');
+    note.setAttribute('id','note');
+    note.innerHTML = msg;
+    document.body.appendChild(note);
+
+    let elClose = document.getElementById('close');
+    elClose.addEventListener('click', dismissNote,false);
+
+    let showCategoriesBtn = document.getElementById('CategoryDisplay');
+    showCategoriesBtn.addEventListener('click', listCategories,false);
+
+}, false);
 
 
 tableBody.addEventListener('DOMNodeInserted', function (){
@@ -31,6 +47,21 @@ function addTag(){
 };    
 
 
+function listCategories(){
+    let categoryList = document.createElement('ul');
+    for(let i = 0; i<categories.length;i++){
+        let newLi = document.createElement('li');
+        newLi.textContent = categories[i];
+        categoryList.appendChild(newLi);
+    }
+
+    note.appendChild(categoryList);
+}
+
+
+function dismissNote() {
+    document.body.removeChild(note);
+}
 
 
 function cancelEdit(){

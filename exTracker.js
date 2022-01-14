@@ -9,7 +9,7 @@ const editIcons = document.getElementsByClassName('fas fa-pencil-alt');
 const tagIcons = document.getElementsByClassName('fas fa-tag');
 const form = document.getElementById('form');
 let editTarget;
-let categories = ['Comida', 'Transporte'];
+let categories = [];
 
 
 
@@ -31,6 +31,9 @@ manCatBtn.addEventListener('click', function(){
     let showCategoriesBtn = document.getElementById('CategoryDisplay');
     showCategoriesBtn.addEventListener('click', listCategories,false);
 
+    let createCategoryBtn = document.getElementById('CategoryCreation');
+    createCategoryBtn.addEventListener('click', addCategory,false);
+
 }, false);
 
 
@@ -43,19 +46,70 @@ tableBody.addEventListener('DOMNodeInserted', function (){
 
 
 function addTag(){
-
+    
 };    
 
 
-function listCategories(){
-    let categoryList = document.createElement('ul');
-    for(let i = 0; i<categories.length;i++){
-        let newLi = document.createElement('li');
-        newLi.textContent = categories[i];
-        categoryList.appendChild(newLi);
-    }
+function addCategory(e){
+    let showCategoriesBtn = document.getElementById('CategoryDisplay');
+    showCategoriesBtn.disabled = true;
+    
+    disabled = 'true';
+    let targetOut = e.target;
+    if(targetOut.textContent === 'Create Category'){
+        targetOut.textContent = 'Cancel Creation';
+        let msg = '<form action="#"><label for="newCategory">Enter New Category</label><input id="newCategory" type="text"><button id="enterCat">Enter</button></form>';
+        let divCategoryCreation = document.createElement('div');
+        divCategoryCreation.setAttribute('id','divCatCreation');
+        divCategoryCreation.innerHTML = msg;
+        note.appendChild(divCategoryCreation);
 
-    note.appendChild(categoryList);
+        let enterCategory = document.getElementById('enterCat');
+        enterCategory.addEventListener('click', function(e){
+            let target = e.target;
+            e.preventDefault();
+            if(target.previousSibling.value !== ''){
+                categories.push(target.previousSibling.value);
+                note.removeChild(divCategoryCreation);
+                targetOut.textContent = 'Create Category';
+                showCategoriesBtn.disabled = false;
+            } else {
+                alert('The category cannot be empty');
+            }
+            
+        },false);
+    } else if(targetOut.textContent === 'Cancel Creation') {
+        let divCategoryToRemove = document.getElementById('divCatCreation');
+        note.removeChild(divCategoryToRemove);
+        showCategoriesBtn.disabled = false;
+        targetOut.textContent = 'Create Category';
+    }
+    
+}
+
+
+function listCategories(e){
+    let createCategoryBtn = document.getElementById('CategoryCreation');
+    createCategoryBtn.disabled = true;
+    let target = e.target;
+    let categoryList = document.createElement('ul');
+    categoryList.setAttribute('id','catUl');
+    let myUl = document.getElementById('catUl');
+    if(target.textContent === 'Show Categories'){
+        for(let i = 0; i<categories.length;i++){
+            let newLi = document.createElement('li');
+            newLi.textContent = categories[i];
+            categoryList.appendChild(newLi);
+        }
+
+        note.appendChild(categoryList);
+        target.textContent = 'Hide Categories';
+    } else if (target.textContent === 'Hide Categories') {
+        let parent = myUl.parentNode;
+        parent.removeChild(myUl);
+        target.textContent = 'Show Categories';
+        createCategoryBtn.disabled = false;
+    }
 }
 
 

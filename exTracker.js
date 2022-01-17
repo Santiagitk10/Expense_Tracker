@@ -13,7 +13,7 @@ let categories = [];
 
 
 
-
+//Event Listeners
 addButton.addEventListener('click', addItemToTable,false);
 tableBody.addEventListener('mouseover', showOptions,false);
 tableBody.addEventListener('mouseout', hideOptions,false)
@@ -44,6 +44,22 @@ tableBody.addEventListener('DOMNodeInserted', function (){
     },false);
 
 
+
+
+
+
+
+//Functions
+
+
+
+function deleteCategory(e){
+    let target = e.target;
+    let parent = target.parentNode;
+    let grandparent = parent.parentNode;
+    categories.splice(categories.indexOf(parent.textContent),1);
+    grandparent.removeChild(parent);
+}
 
 function addTag(){
     
@@ -98,12 +114,19 @@ function listCategories(e){
     if(target.textContent === 'Show Categories'){
         for(let i = 0; i<categories.length;i++){
             let newLi = document.createElement('li');
-            newLi.textContent = categories[i];
+            newLi.textContent = categories[i] + " ";
+            let categoryTrashIcon = document.createElement('i');
+            categoryTrashIcon.setAttribute('class', 'fas fa-trash-alt deleteCategory');
+            newLi.appendChild(categoryTrashIcon);
             categoryList.appendChild(newLi);
+            
         }
 
         note.appendChild(categoryList);
         target.textContent = 'Hide Categories';
+        const trashIconsCategories = document.getElementsByClassName('deleteCategory');
+        addListeners(trashIconsCategories,deleteCategory);
+            // trashIconsCategories.addEventListener('click', deleteCategory,false);
     } else if (target.textContent === 'Hide Categories') {
         let parent = myUl.parentNode;
         parent.removeChild(myUl);

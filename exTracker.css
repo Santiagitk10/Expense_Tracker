@@ -126,6 +126,10 @@ li {
 
 /* Agregado por el código */
 
+li > i {
+    font-size: 0.6em;
+}
+
 #note {
     color: #fff;
     background-color: #000;

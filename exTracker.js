@@ -50,9 +50,6 @@ tableBody.addEventListener('DOMNodeInserted', function (){
 
 
 //Functions
-
-
-
 function deleteCategory(e){
     let target = e.target;
     let parent = target.parentNode;
@@ -61,8 +58,33 @@ function deleteCategory(e){
     grandparent.removeChild(parent);
 }
 
-function addTag(){
+
+
+function addTag(e){
+    const target = e.target;
+    const greatGrandParent = target.parentNode.parentNode.parentNode;
+    const newSelect = document.createElement('select');
+    newSelect.setAttribute('id','categorySelect');
+    const firstOption = document.createElement('option');
+    firstOption.textContent = 'Choose';
+    firstOption.selected = true;
+    newSelect.appendChild(firstOption);
+    if(categories.length < 1){
+        let secondOption = document.createElement('option');
+        secondOption.textContent = 'First Manage Categories. Choose this to close';
+        newSelect.appendChild(secondOption);
+    } else {
+        for(let i=0;i<categories.length;i++){
+            let newOption = document.createElement('option');
+            newOption.textContent = categories.sort()[i];
+            newSelect.appendChild(newOption);
+        }
+    }
     
+    greatGrandParent.appendChild(newSelect);
+
+
+
 };    
 
 
@@ -114,7 +136,7 @@ function listCategories(e){
     if(target.textContent === 'Show Categories'){
         for(let i = 0; i<categories.length;i++){
             let newLi = document.createElement('li');
-            newLi.textContent = categories[i] + " ";
+            newLi.textContent = categories.sort()[i] + " ";
             let categoryTrashIcon = document.createElement('i');
             categoryTrashIcon.setAttribute('class', 'fas fa-trash-alt deleteCategory');
             newLi.appendChild(categoryTrashIcon);

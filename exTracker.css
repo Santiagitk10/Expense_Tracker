@@ -25,6 +25,10 @@ th {
     border: 1px solid black;
 }
 
+td {
+    border: 1px solid black;
+}
+
 input {
     margin: 0 3%;
     font-size: 1em;
@@ -159,3 +163,10 @@ li > i {
     
 }
 
+
+#categorySelect {
+    display: block;
+    height: 40px;
+    width: 150px;
+    margin: 15px;
+}

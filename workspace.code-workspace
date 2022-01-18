@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\..\\Answer Boiler"
+		},
+		{
+			"path": "..\\..\\Colt Steele BootCamp\\Zip Files\\Section 11 - Pricing Panel Code\\PricingPanel\\PriceTableStarter"
+		},
+		{
+			"path": "..\\..\\Projects\\To-Do List\\To-Do List 2.0"
+		},
+		{
+			"path": "c:\\Users\\SANTIAGO SIERRA\\Desktop\\FirstApp"
+		},
+		{
+			"path": "C:\\Users\\SANTIAGO SIERRA\\Desktop\\templating"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Expense_Tracker"
+	}
+}

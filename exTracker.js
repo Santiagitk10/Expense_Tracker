@@ -74,14 +74,40 @@ function addTag(e){
         secondOption.textContent = 'First Manage Categories. Choose this to close';
         newSelect.appendChild(secondOption);
     } else {
+        let secondOption = document.createElement('option');
+        secondOption.textContent = 'No Category';
+        newSelect.appendChild(secondOption);
         for(let i=0;i<categories.length;i++){
             let newOption = document.createElement('option');
             newOption.textContent = categories.sort()[i];
             newSelect.appendChild(newOption);
         }
     }
-    
     greatGrandParent.appendChild(newSelect);
+
+    removeListeners(editIcons,'click',startEditItem);
+    removeListeners(trashIcons,'click',deleteItem);
+    removeListeners(tagIcons,'click',addTag);
+
+    const selectBox = document.getElementById('categorySelect');
+    selectBox.addEventListener('change',function(){
+        const selectedCategory = this.options[this.selectedIndex].value;
+        if(selectedCategory === 'First Manage Categories. Choose this to close'){
+            greatGrandParent.removeChild(newSelect);
+        } else {
+            let categoryText = this.previousSibling.previousSibling;
+            categoryText.nodeValue = selectedCategory;
+            greatGrandParent.removeChild(newSelect);
+        }
+
+        //Creating and removing a tr node to activate the listener DOMNodeInserted in the table to add again the listeners for the icons
+        if(dateInput.value === '' && amountInput.value  === '' && itemInput.value === ''){
+            let newTr = document.createElement('tr');
+            tableBody.appendChild(newTr);
+            tableBody.removeChild(newTr);
+        }
+
+    },false);   
 
 
 
@@ -237,6 +263,8 @@ function startEditItem(e){
     //RECORDAR TAMBIÉN QUITAR LOS LISTENERS DEL TAG CUANDO YA LO HAYA CREADO
     removeListeners(editIcons,'click',startEditItem);
     removeListeners(trashIcons,'click',deleteItem);
+    removeListeners(tagIcons,'click',addTag);
+    
 
 }
 

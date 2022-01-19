@@ -64,10 +64,14 @@ li {
 .categoryTd {
     display: flex;
     justify-content:center;
+    align-items: center;
 }
 
 .spanWrapper {
     width: 180px;
+    height: 70px;
+    display: flex;
+    align-items: center;
 }
 
 .hiddenOption {

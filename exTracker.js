@@ -1,5 +1,6 @@
 const addButton = document.getElementById('addButton');
 const manCatBtn = document.getElementById('manCategories');
+const statsBtn = document.getElementById('chart');
 const dateInput = document.getElementById('date');
 const amountInput = document.getElementById('amount');
 const itemInput = document.getElementById('expense');
@@ -10,6 +11,8 @@ const tagIcons = document.getElementsByClassName('fas fa-tag');
 const form = document.getElementById('form');
 let editTarget;
 let categories = [];
+let graphCategories = [];
+let graphData = [];
 
 
 
@@ -26,7 +29,9 @@ manCatBtn.addEventListener('click', function(){
     document.body.appendChild(note);
 
     let elClose = document.getElementById('close');
-    elClose.addEventListener('click', dismissNote,false);
+    elClose.addEventListener('click', function(){
+        dismissNote(note);
+    },false);
 
     let showCategoriesBtn = document.getElementById('CategoryDisplay');
     showCategoriesBtn.addEventListener('click', listCategories,false);
@@ -35,6 +40,27 @@ manCatBtn.addEventListener('click', function(){
     createCategoryBtn.addEventListener('click', addCategory,false);
 
 }, false);
+
+
+statsBtn.addEventListener('click', function(){
+    let msg = '<div class="header"><a id="closeStats" href="#">close X</a></div>';
+    msg += '<form action="#"><div><label for="startDate">Start Date</label><input type="date" name="Start Date" id="startDate"><label for="endDate">End Date</label><input type="date" name="End Date" id="endDate"><button id="graphBtn">Graph</button></div></form>';
+    let statsNote = document.createElement('div');
+    statsNote.setAttribute('id','statsNote');
+    statsNote.innerHTML = msg;
+    document.body.appendChild(statsNote);
+
+    let elClose = document.getElementById('closeStats');
+    elClose.addEventListener('click', function(){
+        dismissNote(statsNote);
+    },false);
+
+    let graphBtn = document.getElementById('graphBtn');
+    graphBtn.addEventListener('click', createGraph,false);
+
+},false);
+
+
 
 
 tableBody.addEventListener('DOMNodeInserted', function (){
@@ -50,6 +76,42 @@ tableBody.addEventListener('DOMNodeInserted', function (){
 
 
 //Functions
+function createGraph(e){
+    e.preventDefault();
+    const startDateEl = document.getElementById('startDate');
+    const endDateEl = document.getElementById('endDate');
+    if(startDateEl.value !== '' && endDateEl.value != '' && startDateEl.value <= endDateEl.value){
+        const tableTrs = document.querySelectorAll('tr.trs');
+        for(let tr of tableTrs){
+            if(tr.firstChild.textContent >= startDateEl.value && tr.firstChild.textContent <= endDateEl.value){
+                if(tr.lastChild.textContent !== 'No Category' && graphCategories.indexOf(tr.lastChild.textContent) === -1){
+                    graphCategories.push(tr.lastChild.textContent);
+                }
+            }
+                
+        }
+
+        for(let graphCategory of graphCategories){
+            let amount = 0;
+            for(let tr of tableTrs){
+                if(tr.firstChild.textContent >= startDateEl.value && tr.firstChild.textContent <= endDateEl.value && tr.lastChild.textContent === graphCategory){
+                    amount += parseInt(tr.firstChild.nextSibling.textContent);
+                }
+            }
+            graphData.push(amount);
+        }
+
+        console.log(graphCategories,graphData);
+    } else {
+        alert('Select a valid Range');
+    }
+    
+    
+    
+
+}
+
+
 function deleteCategory(e){
     let target = e.target;
     let parent = target.parentNode;
@@ -132,13 +194,13 @@ function addCategory(e){
         enterCategory.addEventListener('click', function(e){
             let target = e.target;
             e.preventDefault();
-            if(target.previousSibling.value !== ''){
+            if(target.previousSibling.value !== '' && categories.indexOf(target.previousSibling.value) === -1){
                 categories.push(target.previousSibling.value);
                 note.removeChild(divCategoryCreation);
                 targetOut.textContent = 'Create Category';
                 showCategoriesBtn.disabled = false;
             } else {
-                alert('The category cannot be empty');
+                alert('The category cannot be empty nor it can be a duplicate');
             }
             
         },false);
@@ -184,8 +246,10 @@ function listCategories(e){
 }
 
 
-function dismissNote() {
-    document.body.removeChild(note);
+
+
+function dismissNote(element) {
+    document.body.removeChild(element);
 }
 
 
@@ -333,6 +397,7 @@ function addItemToTable(e){
     //VOLVER A ACTIVAR LA VALIDACIÓN CUANDO YA TODO ESTÉ LISTO
     // if (dateInput.value != '' && amountInput.value != '' && itemInput.value != '' ) {
         const newTr = document.createElement('tr');
+        newTr.setAttribute('class','trs');
         for(let i = 0;i<4;i++){
             let newTd = document.createElement('td');
             newTr.appendChild(newTd);

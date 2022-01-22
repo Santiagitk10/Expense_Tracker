@@ -1,6 +1,8 @@
 body {
     text-align: center;
     font-size: 1.9em;
+    background-color: #d8f3dc;
+    color: #1b4332;
 }
 
 h1  {
@@ -19,6 +21,7 @@ table {
     margin: 20px auto 0px;
     border: 1px solid black;
     width: 80%;
+
 }
 
 th {
@@ -205,4 +208,11 @@ form > div {
     height: 40px;
     width: 150px;
     margin: 15px;
+}
+
+
+#canvasBox {
+    width: 1000px;
+    height: 700px;
+    margin: 0 auto;
 }

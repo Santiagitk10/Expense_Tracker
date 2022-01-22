@@ -56,7 +56,9 @@ statsBtn.addEventListener('click', function(){
     },false);
 
     let graphBtn = document.getElementById('graphBtn');
-    graphBtn.addEventListener('click', createGraph,false);
+    graphBtn.addEventListener('click', function(e){
+        createGraph(e,statsNote);
+    } ,false);
 
 },false);
 
@@ -76,8 +78,18 @@ tableBody.addEventListener('DOMNodeInserted', function (){
 
 
 //Functions
-function createGraph(e){
+function createGraph(e,container){
     e.preventDefault();
+    graphData = [];
+    graphCategories = [];
+
+    if(document.getElementById('canvasBox')){
+        console.log('here');
+        let deleteEl = document.getElementById('canvasBox');
+        let parent = deleteEl.parentNode;
+        parent.removeChild(deleteEl);
+    }
+
     const startDateEl = document.getElementById('startDate');
     const endDateEl = document.getElementById('endDate');
     if(startDateEl.value !== '' && endDateEl.value != '' && startDateEl.value <= endDateEl.value){
@@ -90,7 +102,7 @@ function createGraph(e){
             }
                 
         }
-
+        
         for(let graphCategory of graphCategories){
             let amount = 0;
             for(let tr of tableTrs){
@@ -101,14 +113,54 @@ function createGraph(e){
             graphData.push(amount);
         }
 
+        let canvasBox = document.createElement('div');
+        canvasBox.setAttribute('id','canvasBox');
+        let chartCanvas = document.createElement('canvas');
+        chartCanvas.setAttribute('id','expensesChart');
+        canvasBox.appendChild(chartCanvas);
+        container.appendChild(canvasBox);
+
+        const ctx = chartCanvas.getContext('2d');
+        chartCanvas = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: graphCategories,
+                datasets: [{
+                    label: 'Spent',
+                    data: graphData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
         console.log(graphCategories,graphData);
     } else {
         alert('Select a valid Range');
     }
-    
-    
-    
-
 }
 
 
@@ -147,6 +199,8 @@ function addTag(e){
     }
     greatGrandParent.appendChild(newSelect);
 
+    manCatBtn.disabled = true;
+
     removeListeners(editIcons,'click',startEditItem);
     removeListeners(trashIcons,'click',deleteItem);
     removeListeners(tagIcons,'click',addTag);
@@ -156,10 +210,12 @@ function addTag(e){
         const selectedCategory = this.options[this.selectedIndex].value;
         if(selectedCategory === 'First Manage Categories. Choose this to close'){
             greatGrandParent.removeChild(newSelect);
+            manCatBtn.disabled = false;
         } else {
             let categoryText = this.previousSibling.previousSibling;
             categoryText.nodeValue = selectedCategory;
             greatGrandParent.removeChild(newSelect);
+            manCatBtn.disabled = false;
         }
 
         //Creating and removing a tr node to activate the listener DOMNodeInserted in the table to add again the listeners for the icons
@@ -236,7 +292,6 @@ function listCategories(e){
         target.textContent = 'Hide Categories';
         const trashIconsCategories = document.getElementsByClassName('deleteCategory');
         addListeners(trashIconsCategories,deleteCategory);
-            // trashIconsCategories.addEventListener('click', deleteCategory,false);
     } else if (target.textContent === 'Hide Categories') {
         let parent = myUl.parentNode;
         parent.removeChild(myUl);
@@ -324,7 +379,6 @@ function startEditItem(e){
     let cancelButton = document.getElementById('cancelBtn');
     cancelButton.addEventListener('click',cancelEdit,false);
 
-    //RECORDAR TAMBIÉN QUITAR LOS LISTENERS DEL TAG CUANDO YA LO HAYA CREADO
     removeListeners(editIcons,'click',startEditItem);
     removeListeners(trashIcons,'click',deleteItem);
     removeListeners(tagIcons,'click',addTag);
@@ -394,8 +448,7 @@ function showOptions(e){
 
 function addItemToTable(e){
     e.preventDefault();
-    //VOLVER A ACTIVAR LA VALIDACIÓN CUANDO YA TODO ESTÉ LISTO
-    // if (dateInput.value != '' && amountInput.value != '' && itemInput.value != '' ) {
+    if (dateInput.value != '' && amountInput.value != '' && itemInput.value != '' ) {
         const newTr = document.createElement('tr');
         newTr.setAttribute('class','trs');
         for(let i = 0;i<4;i++){
@@ -416,8 +469,6 @@ function addItemToTable(e){
         let trashSpan = document.createElement('span');
         trashSpan.setAttribute('class', 'hiddenOption');
         let trashIcon = document.createElement('i');
-        //VER SI ELIMINO EL ATRIBUTO DATA-ATR CREO QUE NO LO NECESITO
-        trashIcon.setAttribute('data-atr', 'hiddable');
         trashIcon.setAttribute('class', 'fas fa-trash-alt');
         trashSpan.appendChild(trashIcon);
 
@@ -426,7 +477,6 @@ function addItemToTable(e){
         let pencilSpan = document.createElement('span');
         pencilSpan.setAttribute('class', 'hiddenOption');
         let pencilIcon = document.createElement('i');
-        pencilIcon.setAttribute('data-atr', 'hiddable');
         pencilIcon.setAttribute('class', 'fas fa-pencil-alt');
         pencilSpan.appendChild(pencilIcon);
 
@@ -435,7 +485,6 @@ function addItemToTable(e){
         let tagSpan = document.createElement('span');
         tagSpan.setAttribute('class', 'hiddenOption');
         let tagIcon = document.createElement('i');
-        tagIcon.setAttribute('data-atr', 'hiddable');
         tagIcon.setAttribute('class', 'fas fa-tag');
         tagSpan.appendChild(tagIcon);
 
@@ -450,9 +499,9 @@ function addItemToTable(e){
         amountInput.value = '';
         itemInput.value = '';
 
-    // } else {
-    //     alert('All fields must be populated');
-    // }
+    } else {
+        alert('All fields must be populated');
+    }
     
 
 }
